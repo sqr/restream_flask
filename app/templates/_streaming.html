@@ -1,0 +1,37 @@
+{% import 'bootstrap/wtf.html' as wtf %}
+
+<tr>
+    <th scope="row">{{ streaming.id }}</th>
+    <td>{{ streaming.job_id }}</td>
+    <td>{{ streaming.title }}</td>
+    <td><a href ="{{ streaming.origin }}" target="_blank">Open</a></td>
+    <td>{{ streaming.server }}</td>
+    <td>{{ streaming.stream_key }}</td>
+    <td>{{ streaming.author.username }}</td>
+    <td>{{ moment(streaming.timestamp).fromNow() }}</td>
+    <td>
+    {% if streaming.complete %}
+    <div class="text-center">❌</div>
+    {% else %}
+    <div class="text-center">✅</div>
+    {% endif %}</td>
+    <td>
+    {% if streaming.complete %}
+    <form method="post" action="/streamings">
+        <div class="text-center">
+            <input type="submit" class="btn btn-danger" name="Download" value="Stop" disabled>
+        </div>
+    </form>
+    {% else %}
+        {% if form2 %}
+        <form action="" method="post">
+        {{ form2.csrf_token() }}
+        {{ form2.fld1(value=streaming.job_id) }}
+        <div class="text-center">
+            {{ form2.submit_stop(class="btn btn-danger") }}
+        </div>
+    </form>
+        {% endif %}
+    {% endif %}
+    </td>
+</tr>

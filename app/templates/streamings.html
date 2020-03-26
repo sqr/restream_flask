@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Estos son los streamings, {{ current_user.username }}!</h1>
+    {% if form %}
+    {{ wtf.quick_form(form, extra_classes="form-horizontal", form_type="horizontal", horizontal_columns=('sm', 2, 10)) }}
+    {% endif %}
+    <br>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Job ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Origin</th>
+            <th scope="col">Server</th>
+            <th scope="col">Stream Key</th>
+            <th scope="col">User</th>
+            <th scope="col">Started</th>
+            <th scope="col"><div class="text-center">Status</div></th>
+            <th scope="col"><div class="text-center">Stop</div></th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for streaming in streamings %}
+                {% include '_streaming.html' %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> Newer posts
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    Older posts <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
