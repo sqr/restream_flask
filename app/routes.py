@@ -13,8 +13,7 @@ import os, signal
 import time
 import psutil
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/oldindex', methods=['GET', 'POST'])
 @login_required
 def index():
     form = PostForm()
@@ -48,19 +47,19 @@ def login():
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
+            next_page = url_for('streamings')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('streamings'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('streamings'))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
@@ -149,6 +148,8 @@ def explore():
 
     return render_template('index.html', title='Explore', posts=posts.items, next_url=next_url, prev_url=prev_url)
 
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @app.route('/streamings', methods=['GET', 'POST'])
 @login_required
 def streamings():
@@ -186,7 +187,8 @@ def streamings():
                 try:
                     parent = psutil.Process(pid)
                 except psutil.NoSuchProcess:
-                    return
+                    flash('No worker')
+                    return redirect(url_for('streamings'))
                 children = parent.children(recursive=True)
                 for p in children:
                     os.kill(p.pid, signal.SIGTERM)  
@@ -195,13 +197,6 @@ def streamings():
         to_stop.complete = True
         db.session.commit()
 
-        '''rq.cancel(form2.fld1.data, connection=conn1)
-        try:
-            rq.cancel_job(form2.fld1.data)
-        except:
-            to_stop = Streaming.query.filter_by(job_id=form2.fld1.data).first()
-            to_stop.complete = True
-            db.session.commit()'''
         return redirect(url_for('streamings'))
 
     return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url)

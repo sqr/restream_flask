@@ -1,9 +1,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 <tr>
-    <th scope="row">{{ streaming.id }}</th>
-    <td>{{ streaming.job_id }}</td>
-    <td>{{ streaming.title }}</td>
+    <th scope="row">{{ streaming.title }}</th>
     <td><a href ="{{ streaming.origin }}" target="_blank">Open</a></td>
     <td>{{ streaming.server }}</td>
     <td>{{ streaming.stream_key }}</td>
