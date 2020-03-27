@@ -166,7 +166,7 @@ def streamings():
         if streamings.has_prev else None
     
     if form.submit_start.data and form.validate():
-        queue = rq.Queue('microblog-tasks', connection=Redis.from_url('redis://localhost:6380'))
+        queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
         job = queue.enqueue('app.tasks.restream', job_timeout=36000, origin=form.origin.data, server=form.server.data, stream_key=form.stream_key.data)
         stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data, server=form.server.data, stream_key=form.stream_key.data, author=current_user)
         db.session.add(stream)
@@ -175,8 +175,7 @@ def streamings():
         return redirect(url_for('streamings'))
 
     if form2.submit_stop.data and form2.validate():
-        conn1 = Redis.from_url('redis://localhost:6380')
-        queue = rq.Queue('microblog-tasks', connection=Redis.from_url('redis://localhost:6380'))
+        queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
         workers = rq.Worker.all(queue=queue)
 
         for worker in workers:
