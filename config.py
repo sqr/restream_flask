@@ -8,6 +8,6 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     POSTS_PER_PAGE = 3
     STREAMINGS_PER_PAGE = 10
-    REDIS_URL = 'redis://localhost:6380'
+    REDIS_URL = 'redis://192.168.1.147:6380'
 
 #    REDIS_URL = os.environ.get('REDIS_URL') or 'redis://:PeinesitoPeinador2020$@sqrsrv.no-ip.org:6379/0'
