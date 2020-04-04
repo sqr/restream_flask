@@ -4,6 +4,7 @@ from app.models import Task, Streaming
 import time
 import ffmpeg
 import youtube_dl
+from pathlib import Path
 
 def get_manifest(video_url):
     ydl_opts = {
@@ -17,9 +18,15 @@ def get_manifest(video_url):
 def generate_url(server, stream_key):
     return server + "/" + stream_key
 
+def convert_reuters(origin):
+    return str(Path(origin).parent / 'chunklist_b4096000.m3u8')
+
+
 def restream(origin, server, stream_key):
     if 'youtu' in origin:
         origin = get_manifest(origin)
+    elif 'smil' in origin:
+        origin = convert_reuters(origin)
     stream_server = generate_url(server, stream_key)
     try:
         stream_map = None
@@ -28,7 +35,7 @@ def restream(origin, server, stream_key):
         stream_ol = ffmpeg.overlay(stream1, stream2, x='main_w-overlay_w-50', y='50')
         stream_ol = ffmpeg.filter(stream_ol, 'fps', fps=25, round='up')
         a1 = stream1.audio
-        stream = ffmpeg.output(stream_ol, a1, stream_server, map='0:1', map='0:2', format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='1', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
+        stream = ffmpeg.output(stream_ol, a1, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='1', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         print(stream.get_args())
         ffmpeg.run(stream)
         set_complete()
