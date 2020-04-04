@@ -23,6 +23,7 @@
     {% else %}
         {% if form2 %}
         <form action="" method="post">
+        {{ form2.csrf_token() }}
         {{ form2.fld1(value=streaming.job_id) }}
         <div class="text-center">
             {{ form2.submit_stop(class="btn btn-danger") }}
