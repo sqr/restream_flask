@@ -18,10 +18,12 @@ def generate_url(server, stream_key):
     return server + "/" + stream_key
 
 def restream(origin, server, stream_key):
+    if 'youtu' in origin:
+        origin = get_manifest(origin)
     stream_server = generate_url(server, stream_key)
     try:
         stream_map = None
-        stream1 = ffmpeg.input(get_manifest(origin))
+        stream1 = ffmpeg.input(origin)
         stream2 = ffmpeg.input('mosca_66.png')
         stream_ol = ffmpeg.overlay(stream1, stream2, x='main_w-overlay_w-50', y='50')
         stream_ol = ffmpeg.filter(stream_ol, 'fps', fps=25, round='up')
