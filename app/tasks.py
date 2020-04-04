@@ -27,7 +27,7 @@ def restream(origin, server, stream_key):
         stream2 = ffmpeg.input('mosca_66.png')
         stream_ol = ffmpeg.overlay(stream1, stream2, x='main_w-overlay_w-50', y='50')
         stream_ol = ffmpeg.filter(stream_ol, 'fps', fps=25, round='up')
-        a1 = stream1.audio
+        a1 = stream1.audio[0]
         stream = ffmpeg.output(stream_ol, a1, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='1', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         print(stream.get_args())
         ffmpeg.run(stream)
