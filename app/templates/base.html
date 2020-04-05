@@ -23,6 +23,7 @@
                     {% if current_user.is_anonymous %}
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     {% else %}
+                    <li><a target="_blank" href="https://docs.google.com/document/d/1x0H6VVntLsZYlwLK3ieRwY345gVSzK9GNRnAyn2RBEQ/edit">Documentación</a></li>
                     <li><a href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
                     {% endif %}
