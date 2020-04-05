@@ -57,11 +57,11 @@ class StreamingForm(FlaskForm):
         DataRequired(), Length(min=1, max=140)])
     submit_start = SubmitField('Launch 🚀')
 
-    def validate_origin(form, field):
-        if 'youtube' not in field.data and 'm3u8' not in field.data:
+    def validate_origin(self, field):
+        if 'youtu' not in field.data and 'm3u8' not in field.data:
             raise ValidationError('Not a valid input')
 
-    def validate_server(form, field):
+    def validate_server(self, field):
         if 'rtmp' not in field.data and 'rtmps' not in field.data:
             raise ValidationError('Not a valid server')
 
