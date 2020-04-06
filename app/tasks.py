@@ -36,9 +36,9 @@ def restream(origin, server, stream_key):
         stream_ol = ffmpeg.filter(stream_ol, 'fps', fps=25, round='up')
         a1 = stream1.audio
         if 'dailymotion' in server:
-            stream = ffmpeg.output(stream_ol, a1, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='1', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
+            stream = ffmpeg.output(stream_ol, a1[[1]], stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='1', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         else:
-            stream = ffmpeg.output(stream_ol, a1, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='1', s='1280x720', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
+            stream = ffmpeg.output(stream_ol, a1[[1]], stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='1', s='1280x720', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         ffmpeg.run(stream)
         set_complete()
     except:
