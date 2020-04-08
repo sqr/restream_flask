@@ -37,8 +37,10 @@ def restream(origin, server, stream_key):
         a1 = stream1.audio
         if 'smil' in origin:
             stream1_audio = stream1['2']
+        elif 'youtu' in origin:
+            stream1_audio = a1
         else:
-            stream1_audio = stream1['1']
+            stream1_audio = stream1['2']
         if 'dailymotion' in server:
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         else:
