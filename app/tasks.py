@@ -37,7 +37,7 @@ def restream(origin, server, stream_key):
         a1 = stream1.audio
         if 'smil' in origin:
             stream1_audio = stream1['2']
-        elif 'youtu' in origin:
+        elif 'googlevideo' in origin:
             stream1_audio = a1
         else:
             stream1_audio = stream1['2']
