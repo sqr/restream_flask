@@ -40,7 +40,7 @@ def restream(origin, server, stream_key):
         elif 'googlevideo' in origin:
             stream1_audio = a1
         else:
-            stream1_audio = stream1['2']
+            stream1_audio = stream1['1']
         if 'dailymotion' in server:
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', s='1920x1080', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         else:
