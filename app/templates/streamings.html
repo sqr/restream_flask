@@ -5,8 +5,9 @@
     <h2>Añadir un stream</h2>
     {% if form %}
     {{ wtf.quick_form(form, extra_classes="form-horizontal", form_type="horizontal", horizontal_columns=('sm', 2, 10)) }}
+    {% endif %}
+    <br>
     <form method="POST" action="/">
-    {{  form.title.label  }} {{  form.title(size=20)}}
      <div class="input-group">
         <input type="text" class="form-control" aria-label="Text input with dropdown button">
         <div class="input-group-append">
@@ -21,7 +22,6 @@
         </div>
       </div>
     </form>
-    {% endif %}
     <br>
     <table class="table">
         <thead>
