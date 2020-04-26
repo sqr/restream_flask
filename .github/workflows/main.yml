@@ -32,14 +32,9 @@ jobs:
         echo Add other actions to build,
         echo test, and deploy your project.
         
-    - name: Sync
-      env:
-        dest: "square@sqrsrv.no-ip.org:220:/home/square/streaming-dev/restream_flask/"
-      run: |
-        echo "${{secrets.DEPLOY_KEY}}" > deploy_key
-        chmod 600 ./deploy_key
-        rsync -chav --delete \
-          -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
-          --exclude /.git/ \
-          --exclude /.github/ \
-          ./ ${{env.dest}}
+    - name: Deploy to Staging 
+        uses: contention/rsync-deployments@v1.0.0
+        env: 
+            DEPLOY_KEY: ${{secrets.DEPLOY_KEY}} 
+        with: 
+            args: "-avzr --delete --exclude .htaccess --exclude /.github/ square@sqrsrv.no-ip.org:220:/home/square/streaming-dev/restream_flask/"
