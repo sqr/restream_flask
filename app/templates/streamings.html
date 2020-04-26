@@ -11,7 +11,7 @@
     <button onclick="myFunction3()">Populate2</button>
     <script>
         function myFunction2() {
-            var peinejs = '{{  peine  }}';
+            var peinejs = {{ peine|tojson }};
   document.getElementsByName("title")[0].value = peinejs;
     }
         function myFunction3() {
