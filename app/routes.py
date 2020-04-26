@@ -200,4 +200,4 @@ def streamings():
         db.session.commit()
         return redirect(url_for('streamings'))
 
-    return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url)
+    return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, peine=peine,)
