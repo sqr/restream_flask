@@ -16,6 +16,8 @@
         <p>
             {{ form.origin.label }}<br>
             {{ form.origin(size=32, class_="form-control") }}
+            <button onclick="myFunction2()">Populate</button>
+            <button onclick="myFunction3()">Populate2</button>
         </p>
         <p>
             {{ form.server.label }}<br>
@@ -25,7 +27,7 @@
             {{ form.stream_key.label }}<br>
             {{ form.stream_key(size=32, class_="form-control") }}
         </p>
-        <p>{{ form.submit_start() }}</p>
+        <p>{{ form.submit_start(class_="btn btn-danger") }}</p>
     </form>
     <br>
     <button onclick="myFunction2()">Populate</button>
