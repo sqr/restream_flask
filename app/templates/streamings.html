@@ -7,19 +7,12 @@
     {{ wtf.quick_form(form, extra_classes="form-horizontal", form_type="horizontal", horizontal_columns=('sm', 2, 10)) }}
     {% endif %}
     <br>
-    <div class="input-group">
-        <input type="text" class="form-control" aria-label="Text input with dropdown button">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div>
-    </div>
+    <button onclick="myFunction2()">Populate</button>
+    <script>
+        function myFunction2() {
+  document.getElementsByName("title")[0].setAttribute("value", "https://www.w3schools.com");
+    }
+    </script>
     <table class="table">
         <thead>
           <tr>
