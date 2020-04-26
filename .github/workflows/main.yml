@@ -37,4 +37,4 @@ jobs:
         env: 
             DEPLOY_KEY: ${{secrets.DEPLOY_KEY}} 
         with: 
-            args: "-avzr --delete --exclude .htaccess --exclude /.github/ square@sqrsrv.no-ip.org:220:/home/square/streaming-dev/restream_flask/"
+            args: "-avzr -e ssh --delete --exclude .htaccess --exclude /.github/ square@sqrsrv.no-ip.org:220:/home/square/streaming-dev/restream_flask/"
