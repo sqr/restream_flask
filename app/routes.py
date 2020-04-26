@@ -155,6 +155,7 @@ def explore():
 @login_required
 def streamings():
 
+    peine = 'peine'
     form = StreamingForm()
     form2 = StopForm()
     page = request.args.get('page', 1, type=int)
