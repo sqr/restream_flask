@@ -7,6 +7,27 @@
     {{ wtf.quick_form(form, extra_classes="form-horizontal", form_type="horizontal", horizontal_columns=('sm', 2, 10)) }}
     {% endif %}
     <br>
+    <form action="" method="post" novalidate></form>
+    {{ form.hidden_tag() }}
+        <p>
+            {{ form.title.label }}<br>
+            {{ form.title(size=32) }}
+        </p>
+        <p>
+            {{ form.origin.label }}<br>
+            {{ form.origin(size=32) }}
+        </p>
+        <p>
+            {{ form.server.label }}<br>
+            {{ form.server(size=32) }}
+        </p>
+        <p>
+            {{ form.stream_key.label }}<br>
+            {{ form.stream_key(size=32) }}
+        </p>
+        <p>{{ form.submit_start() }}</p>
+    </form>
+    <br>
     <button onclick="myFunction2()">Populate</button>
     <button onclick="myFunction3()">Populate2</button>
     <script>
