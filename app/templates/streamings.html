@@ -7,7 +7,7 @@
     {{ wtf.quick_form(form, extra_classes="form-horizontal", form_type="horizontal", horizontal_columns=('sm', 2, 10)) }}
     {% endif %}
     <br>
-    <form action="" method="post" novalidate></form>
+    <form action="" method="post" class="form form-horizontal form-horizontal" role="form">
     {{ form.hidden_tag() }}
         <p>
             {{ form.title.label }}<br>
@@ -32,8 +32,6 @@
         <p>{{ form.submit_start(class_="btn btn-danger") }}</p>
     </form>
     <br>
-    <button onclick="myFunction2()">Populate</button>
-    <button onclick="myFunction3()">Populate2</button>
     <script>
         function myFunction2() {
             var peinejs = {{ peine|tojson }};
