@@ -22,7 +22,7 @@
             </div>
         </div>
         <p>
-        <div class = "col-sm-10">
+        <div class = "col-sm-offset-2 col-sm-10">
             <button type="button" class="btn btn-primary" onclick="myFunction2()">Ministros</button>
             <button type="button" class="btn btn-primary" onclick="myFunction3()">Presidente</button>
         </div>
@@ -39,7 +39,11 @@
                 {{ form.stream_key(size=32, class_="form-control") }}
             </div>
         </div>
-        <p>{{ form.submit_start(class_="btn btn-danger") }}</p>
+        <p>
+        <div class="col-sm-offset-2 col-sm-10">
+            {{ form.submit_start(class_="btn btn-danger") }}
+        </div>
+        </p>
     </form>
     <br>
     <script>
