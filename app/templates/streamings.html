@@ -3,10 +3,6 @@
 
 {% block app_content %}
     <h2>Añadir un stream</h2>
-    {% if form %}
-    {{ wtf.quick_form(form, extra_classes="form-horizontal", form_type="horizontal", horizontal_columns=('sm', 2, 10)) }}
-    {% endif %}
-    <br>
     <form action="" method="post" class="form form-horizontal form-horizontal" role="form">
     {{ form.hidden_tag() }}
         <div class = "form-group required">
