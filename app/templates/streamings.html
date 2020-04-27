@@ -21,9 +21,11 @@
                 {{ form.origin(size=32, class_="form-control") }}
             </div>
         </div>
-        <div class = "col-sm-offset-2 col-sm-10">
-            <button type="button" class="btn btn-primary" onclick="myFunction2()">Ministros</button>
-            <button type="button" class="btn btn-primary" onclick="myFunction3()">Presidente</button>
+        <div class = "form-group">
+            <div class = "col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-primary" onclick="myFunction2()">Ministros</button>
+                <button type="button" class="btn btn-primary" onclick="myFunction3()">Presidente</button>
+            </div>
         </div>
         <div class = "form-group required">
             {{ form.server.label(class_="control-label col-sm-2") }}
@@ -37,8 +39,10 @@
                 {{ form.stream_key(size=32, class_="form-control") }}
             </div>
         </div>
-        <div class="col-sm-offset-2 col-sm-10">
-            {{ form.submit_start(class_="btn btn-danger") }}
+        <div class = "form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                {{ form.submit_start(class_="btn btn-danger") }}
+            </div>
         </div>
     </form>
     <br>
