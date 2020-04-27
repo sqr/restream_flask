@@ -2,7 +2,9 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h2>Añadir un stream</h2>
+    <div class="col-sm-offset-2 col-sm-10">
+        <h2>Añadir un stream</h2>
+    </div>
     <form action="" method="post" class="form form-horizontal form-horizontal" role="form">
     {{ form.hidden_tag() }}
         <div class = "form-group required">
