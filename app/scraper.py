@@ -6,11 +6,14 @@ URL_PRESIDENTE = 'https://www.lamoncloa.gob.es/multimedia/videos/presidente/Pagi
 URL_MINISTROS = 'https://www.lamoncloa.gob.es/multimedia/videos/consejoministros/Paginas/directo.aspx'
 
 def get_origin(URL):
-    r = requests.get(URL)
-    soup = BeautifulSoup(r.content, 'html.parser') 
-    soup_div = soup.find("div", {"id": "div_video_contenedor"})
+    try:
+        r = requests.get(URL)
+        soup = BeautifulSoup(r.content, 'html.parser') 
+        soup_div = soup.find("div", {"id": "div_video_contenedor"})
 
-    ss = str(soup_div)
+        ss = str(soup_div)
 
-    urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', ss)
-    return (urls[0].translate({ord(i): None for i in ',\''}))
+        urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', ss)
+        return (urls[0].translate({ord(i): None for i in ',\''}))
+    except:
+        return ('URL NO DISPONIBLE')
