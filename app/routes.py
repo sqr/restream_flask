@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request
-from app import app, db, tasks
+from app import app, db, tasks, scraper
 from app.forms import LoginForm, RegistrationForm, StreamingForm, StopForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Post, Streaming
@@ -155,7 +155,7 @@ def explore():
 @login_required
 def streamings():
 
-    peine = 'peine'
+    peine = scraper.get_origin(URL_PRESIDENTE)'
     form = StreamingForm()
     form2 = StopForm()
     page = request.args.get('page', 1, type=int)
