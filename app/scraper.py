@@ -7,7 +7,7 @@ URL_MINISTROS = 'https://www.lamoncloa.gob.es/multimedia/videos/consejoministros
 
 def get_origin(URL):
     r = requests.get(URL)
-    soup = BeautifulSoup(r.content, 'html5lib') 
+    soup = BeautifulSoup(r.content, 'html.parser') 
     soup_div = soup.find("div", {"id": "div_video_contenedor"})
 
     ss = str(soup_div)
