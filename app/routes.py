@@ -155,7 +155,7 @@ def explore():
 @login_required
 def streamings():
 
-    peine = scraper.get_origin(URL_PRESIDENTE)'
+    peine = scraper.get_origin(URL_PRESIDENTE)
     form = StreamingForm()
     form2 = StopForm()
     page = request.args.get('page', 1, type=int)
