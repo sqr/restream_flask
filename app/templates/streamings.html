@@ -21,8 +21,8 @@
         </div>
         <div class = "form-group">
             <div class = "col-sm-offset-2 col-sm-10">
-                <button type="button" class="btn btn-primary" onclick="myFunction2()">Ministros</button>
-                <button type="button" class="btn btn-primary" onclick="myFunction3()">Presidente</button>
+                <button type="button" class="btn btn-primary" onclick="Ministros()">Ministros</button>
+                <button type="button" class="btn btn-primary" onclick="Presidente()">Presidente</button>
                 <button type="button" class="btn btn-primary" onclick="myFunction4()">Congreso</button>
                 <button type="button" class="btn btn-primary" onclick="myFunction5()">Senado</button>
             </div>
@@ -47,12 +47,13 @@
     </form>
     <br>
     <script>
-        function myFunction2() {
-            var peinejs = {{ peine|tojson }};
-  document.getElementsByName("title")[0].value = peinejs;
+        function Presidente() {
+            var presi_js = {{ url_presidente|tojson }};
+  document.getElementsByName("origin")[0].value = presi_js;
     }
-        function myFunction3() {
-  document.getElementsByName("title")[0].value = "https://www.w3schools.com2";
+        function Ministros() {
+            var minis_js = {{ url_ministros|tojson }};
+  document.getElementsByName("origin")[0].value = minis_js;
     }
     </script>
    <hr />

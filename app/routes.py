@@ -155,7 +155,8 @@ def explore():
 @login_required
 def streamings():
 
-    peine = scraper.get_origin(scraper.URL_PRESIDENTE)
+    url_presidente = scraper.get_origin(scraper.URL_PRESIDENTE)
+    url_ministros = scraper.get_origin(scraper.URL_MINISTROS)
     form = StreamingForm()
     form2 = StopForm()
     page = request.args.get('page', 1, type=int)
@@ -200,4 +201,4 @@ def streamings():
         db.session.commit()
         return redirect(url_for('streamings'))
 
-    return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, peine=peine,)
+    return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, url_presidente=url_presidente, url_ministros=url_ministros,)
