@@ -21,9 +21,15 @@
         </div>
         <div class = "form-group">
             <div class = "col-sm-offset-2 col-sm-10">
-                
-                <button type="button" class="btn btn-primary" onclick="Ministros()">Ministros</button>
-                <button type="button" class="btn btn-primary" onclick="Presidente()">Presidente</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Moncloa<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" style="cursor: pointer;">
+                        <li><a onclick="Ministros()">Ministros</a></li>
+                        <li><a onclick="Presidente()">Presidente</a></li>
+                    </ul>
+                </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Congreso <span class="caret"></span>
