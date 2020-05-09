@@ -11,6 +11,7 @@ import rq
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['DEBUG'] = True
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

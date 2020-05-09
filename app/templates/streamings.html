@@ -2,11 +2,160 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h2>Añadir un stream</h2>
-    {% if form %}
-    {{ wtf.quick_form(form, extra_classes="form-horizontal", form_type="horizontal", horizontal_columns=('sm', 2, 10)) }}
-    {% endif %}
+    <div class="col-sm-offset-2 col-sm-10">
+        <h2>Añadir un stream</h2>
+    </div>
+    <form action="" method="post" class="form form-horizontal form-horizontal" role="form">
+    {{ form.hidden_tag() }}
+        <div class = "form-group required">
+            {{ form.title.label(class_="control-label col-sm-2") }}
+            <div class = "col-sm-10">
+                {{ form.title(size=32, class_="form-control") }}
+            </div>
+        </div>
+        <div class = "form-group required">
+            {{ form.origin.label(class_="control-label col-sm-2") }}
+            <div class = "col-sm-10">
+                {{ form.origin(size=32, class_="form-control") }}
+            </div>
+        </div>
+        <div class = "form-group">
+            <div class = "col-sm-offset-2 col-sm-10">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Moncloa<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" style="cursor: pointer;">
+                        <li><a onclick="Ministros()">Ministros</a></li>
+                        <li><a onclick="Presidente()">Presidente</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Congreso <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" style="cursor: pointer;">
+                        <li><a onclick="Congreso('canal_p')">Canal Parlamentario</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a onclick="Congreso('canal1')">Canal 1</a></li>
+                        <li><a onclick="Congreso('canal2')">Canal 2</a></li>
+                        <li><a onclick="Congreso('canal3')">Canal 3</a></li>
+                        <li><a onclick="Congreso('canal4')">Canal 4</a></li>
+                        <li><a onclick="Congreso('canal5')">Canal 5</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Senado <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" style="cursor: pointer;">
+                        <li><a onclick="Senado('canal1')">Canal 1</a></li>
+                        <li><a onclick="Senado('canal2')">Canal 2</a></li>
+                        <li><a onclick="Senado('canal3')">Canal 3</a></li>
+                        <li><a onclick="Senado('canal4')">Canal 4</a></li>
+                        <li><a onclick="Senado('canal5')">Canal 5</a></li>
+                        <li><a onclick="Senado('canal6')">Canal 6</a></li>
+                        <li><a onclick="Senado('canal7')">Canal 7</a></li>
+                        <li><a onclick="Senado('canal8')">Canal 8</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class = "form-group required">
+            {{ form.server.label(class_="control-label col-sm-2") }}
+            <div class = "col-sm-10">
+                {{ form.server(size=32, class_="form-control") }}
+            </div>
+        </div>
+        <div class = "form-group required">
+            {{ form.stream_key.label(class_="control-label col-sm-2") }}
+            <div class = "col-sm-10">
+                {{ form.stream_key(size=32, class_="form-control") }}
+            </div>
+        </div>
+        <div class = "form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                {{ form.submit_start(class_="btn btn-danger") }}
+            </div>
+        </div>
+    </form>
     <br>
+    <script>
+        function Presidente() {
+            var presi_js = {{ url_presidente|tojson }};
+  document.getElementsByName("origin")[0].value = presi_js;
+        }
+
+        function Ministros() {
+            var minis_js = {{ url_ministros|tojson }};
+  document.getElementsByName("origin")[0].value = minis_js;
+        }
+
+        function Congreso(canal) {
+            var canal_parlamentario = "http://congresodirecto-f.akamaihd.net/i/congreso6_1@54665/master.m3u8";
+            var canal1 = "http://congresodirecto-f.akamaihd.net/i/congreso1_1@71529/master.m3u8";
+            var canal2 = "http://congresodirecto-f.akamaihd.net/i/congreso2_1@72033/master.m3u8";
+            var canal3 = "http://congresodirecto-f.akamaihd.net/i/congreso3_1@72034/master.m3u8";
+            var canal4 = "http://congresodirecto-f.akamaihd.net/i/congreso4_1@53937/master.m3u8";
+            var canal5 = "http://congresodirecto-f.akamaihd.net/i/congreso5_1@51923/master.m3u8";
+            
+            if (canal == 'canal_p') {
+                document.getElementsByName("origin")[0].value = canal_parlamentario;
+            }
+            if (canal == 'canal1') {
+                document.getElementsByName("origin")[0].value = canal1;
+            }
+            if (canal == 'canal2') {
+                document.getElementsByName("origin")[0].value = canal2;
+            }
+            if (canal == 'canal3') {
+                document.getElementsByName("origin")[0].value = canal3;
+            }
+            if (canal == 'canal4') {
+                document.getElementsByName("origin")[0].value = canal4;
+            }
+            if (canal == 'canal5') {
+                document.getElementsByName("origin")[0].value = canal5;
+            }
+        }
+
+        function Senado(canal) {
+            var canal1 = "http://senstream03.senado.es:1935/live/smil:punto1.smil/playlist.m3u8";
+            var canal2 = "http://senstream03.senado.es:1935/live/smil:punto2.smil/playlist.m3u8";
+            var canal3 = "http://senstream03.senado.es:1935/live/smil:punto3.smil/playlist.m3u8";
+            var canal4 = "http://senstream03.senado.es:1935/live/smil:punto4.smil/playlist.m3u8";
+            var canal5 = "http://senstream03.senado.es:1935/live/smil:punto5.smil/playlist.m3u8";
+            var canal6 = "http://senstream03.senado.es:1935/live/smil:punto6.smil/playlist.m3u8";
+            var canal7 = "http://senstream03.senado.es:1935/live/smil:punto7.smil/playlist.m3u8";
+            var canal8 = "http://senstream03.senado.es:1935/live/smil:punto8.smil/playlist.m3u8";
+            
+            if (canal == 'canal1') {
+                document.getElementsByName("origin")[0].value = canal1;
+            }
+            if (canal == 'canal2') {
+                document.getElementsByName("origin")[0].value = canal2;
+            }
+            if (canal == 'canal3') {
+                document.getElementsByName("origin")[0].value = canal3;
+            }
+            if (canal == 'canal4') {
+                document.getElementsByName("origin")[0].value = canal4;
+            }
+            if (canal == 'canal5') {
+                document.getElementsByName("origin")[0].value = canal5;
+            }
+            if (canal == 'canal6') {
+                document.getElementsByName("origin")[0].value = canal6;
+            }
+            if (canal == 'canal7') {
+                document.getElementsByName("origin")[0].value = canal7;
+            }
+            if (canal == 'canal8') {
+                document.getElementsByName("origin")[0].value = canal8;
+            }
+        }
+    </script>
+   <hr />
     <table class="table">
         <thead>
           <tr>
