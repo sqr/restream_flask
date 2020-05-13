@@ -36,7 +36,8 @@ def restream(origin, server, stream_key):
         probe_decoded = probe(origin)
         video_stream = get_video_stream(probe_decoded)
         audio_stream = get_audio_stream(probe_decoded)
-        stream_ol = ffmpeg.overlay(stream1[video_stream[0]], stream2, x='main_w-overlay_w-50', y='50')
+        print(video_stream[0])
+        stream_ol = ffmpeg.overlay(stream1[str(video_stream[0])], stream2, x='main_w-overlay_w-50', y='50')
         stream_ol = ffmpeg.filter(stream_ol, 'fps', fps=25, round='up')
         a1 = stream1.audio
         """
@@ -47,7 +48,7 @@ def restream(origin, server, stream_key):
         else:
             stream1_audio = stream1['1']
         """
-        stream1_audio = stream1[audio_stream]
+        stream1_audio = stream1[str(audio_stream)]
         if 'dailymotion' in server:
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', s='1920x1080', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         else:
