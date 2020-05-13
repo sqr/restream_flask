@@ -29,6 +29,10 @@ def restream(origin, server, stream_key):
     elif 'smil' in origin:
         origin = convert_reuters(origin)
     stream_server = generate_url(server, stream_key)
+    probe_decoded = probe(origin)
+    print(probe(origin))
+    print(get_video_stream(probe_decoded))
+    print(get_audio_stream(probe_decoded))
     try:
         stream_map = None
         stream1 = ffmpeg.input(origin)
