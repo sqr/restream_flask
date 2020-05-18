@@ -72,6 +72,12 @@ def get_audio_stream(probe_decoded):
     audio_bitrate = 0
     for streams in probe_decoded['streams']:
         if streams['codec_type'] == 'audio':
-            if int(streams['tags']['variant_bitrate']) >= audio_bitrate:
-                audio_stream = streams['index']
+            if streams['bit_rate']:
+                if int(streams['bit_rate']) >= audio_bitrate:
+                    audio_stream = streams['index']
+            elif streams['tags']['variant_bitrate']:
+                if int(streams['tags']['variant_bitrate']) >= audio_bitrate:
+                    audio_stream = streams['index']
+            else:
+                audio_stream = 1
     return audio_stream
