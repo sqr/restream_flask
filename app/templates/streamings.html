@@ -7,12 +7,16 @@
     </div>
     <form action="" method="post" class="form form-horizontal form-horizontal" role="form">
     {{ form.hidden_tag() }}
+    {% if form.errors %}
+    <div class="col-sm-offset-2 col-sm-10">
     {% for error in form.origin.errors %}
     <div class="alert alert-danger" role="alert">{{ error }}</div>
     {% endfor %}
     {% for error in form.server.errors %}
     <div class="alert alert-danger" role="alert">{{ error }}</div>
     {% endfor %}
+    </div>
+    {% endif %}
         <div class = "form-group required">
             {{ form.title.label(class_="control-label col-sm-2") }}
             <div class = "col-sm-10">
