@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
   <div class="col-sm-offset-2 col-sm-10">
     <h2>Marianizador</h2>
   </div>
-  <form name="passdata" action="." method="POST">
+  <form name="passdata" action="." class="form form-horizontal form-horizontal" role="form" method="POST">
     <div class="form-group required">
       <label for="title" class="control-label col-sm-2">Título</label>
         <div class="col-sm-10">
