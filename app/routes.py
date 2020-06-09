@@ -12,6 +12,7 @@ from app.exception_handlers import my_handler
 import os, signal
 import time
 import psutil
+import subprocess
 
 @app.route('/oldindex', methods=['GET', 'POST'])
 @login_required
@@ -202,3 +203,20 @@ def streamings():
         return redirect(url_for('streamings'))
 
     return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, url_presidente=url_presidente, url_ministros=url_ministros,)
+
+@app.route('/marianizer')
+@login_required
+def marianizer():
+    return render_template('marianizer.html')
+
+@app.route('/marianizer', methods=['POST'])
+@login_required
+def getvalue():
+    tweeturl = request.form['tweeturl']
+    videotitle = request.form['title']
+    videoname = "-".join([tweeturl.split("/")[-1], "1"]) + ".mp4"
+    subprocess.run(['download-twitter-resources', '-c', 'twitter_secrets.json', '--video', '--tweet', tweeturl, ''], shell=True)
+    subprocess.call(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=True)
+    file1 = open('id.txt', 'r')
+    video = ('https://www.youtube.com/watch?v=' + file1.read())
+    return render_template('pass.html', video=video)
