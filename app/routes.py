@@ -211,7 +211,8 @@ def marianizer():
 
     if form.submit.data and form.validate():
         flash('Form OK')
-        return redirect(url_for('marianizer'))
+        video = 'peine'
+        return render_template('pass.html', video=video)
 
     return render_template('marianizer.html', title='Marianizer', form=form)
 
