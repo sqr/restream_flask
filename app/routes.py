@@ -210,9 +210,9 @@ def marianizer():
     form = MarianizerForm()
 
     if form.submit.data and form.validate():
-        flash('Form OK')
         video = 'peine'
-        return render_template('pass.html', video=video)
+        tweeturl = request.form['tweet']
+        return render_template('pass.html', video=tweeturl)
 
     return render_template('marianizer.html', title='Marianizer', form=form)
 
