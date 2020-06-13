@@ -208,6 +208,11 @@ def streamings():
 @login_required
 def marianizer():
     form = MarianizerForm()
+
+    if form.submit and form.validate():
+        flash('Form OK')
+        return redirect(url_for('marianizer'))
+
     return render_template('marianizer.html', form=form)
 
 # @app.route('/marianizer', methods=['POST'])
