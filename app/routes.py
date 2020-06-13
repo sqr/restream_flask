@@ -204,12 +204,10 @@ def streamings():
 
     return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, url_presidente=url_presidente, url_ministros=url_ministros,)
 
-@app.route('/marianizer', methods=['GET'])
+@app.route('/marianizer', methods=['GET', 'POST'])
 @login_required
 def marianizer():
-
     form = MarianizerForm()
-
     return render_template('marianizer.html', title='Marianizer', form=form)
 
 # @app.route('/marianizer', methods=['POST'])
