@@ -209,7 +209,7 @@ def streamings():
 def marianizer():
     form = MarianizerForm()
 
-    if form.submit.data and form.validate():
+    if form.submit.data:
         flash('Form OK')
         return redirect(url_for('streamings'))
 
