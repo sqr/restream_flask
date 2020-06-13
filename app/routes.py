@@ -209,9 +209,9 @@ def streamings():
 def marianizer():
     form = MarianizerForm()
 
-    if form.submit.data:
+    if form.submit.data and form.validate():
         flash('Form OK')
-        return redirect(url_for('streamings'))
+        return redirect(url_for('marianizer'))
 
     return render_template('marianizer.html', title='Marianizer', form=form)
 
