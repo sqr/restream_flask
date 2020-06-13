@@ -207,8 +207,8 @@ def streamings():
 @app.route('/marianizer', methods=['GET', 'POST'])
 @login_required
 def marianizer():
-    form = MarianizerForm()
-    return render_template('marianizer.html', title='Marianizer', form=form)
+    #form = MarianizerForm()
+    return render_template('marianizer.html', title='Marianizer')
 
 # @app.route('/marianizer', methods=['POST'])
 # @login_required
