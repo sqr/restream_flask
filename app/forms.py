@@ -74,7 +74,7 @@ class MarianizerForm(FlaskForm):
         DataRequired(), Length(min=1, max=100)])
     tweet = TextField('Tweet', validators=[
         DataRequired(), Length(min=1, max=100)])
-    submit_start = SubmitField('Marianízame 💥')
+    submit = SubmitField('Marianízame 💥')
 
     def validate_tweet(self, field):
         if 'twitter' not in field.data and 't.co' not in field.data:
