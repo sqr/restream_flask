@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db, tasks, scraper
-from app.forms import LoginForm, RegistrationForm, StreamingForm, StopForm
+from app.forms import LoginForm, RegistrationForm, StreamingForm, StopForm, MarianizerForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Post, Streaming
 from werkzeug.urls import url_parse
@@ -204,12 +204,12 @@ def streamings():
 
     return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, url_presidente=url_presidente, url_ministros=url_ministros,)
 
-@app.route('/marianizer')
+@app.route('/marianizer', methods=['GET'])
 @login_required
 def marianizer():
 
     form = MarianizerForm()
-    
+
     return render_template('marianizer.html', title='Marianizer', form=form)
 
 @app.route('/marianizer', methods=['POST'])
