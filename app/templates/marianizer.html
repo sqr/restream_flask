@@ -6,7 +6,6 @@
     <h2>Marianízame!</h2>
   </div>
   <form action="" method="post" class="form form-horizontal form-horizontal" role="form">
-    {{ form.hidden_tag() }}
     {% if form.errors %}
       <div class="col-sm-offset-2 col-sm-10">
         {% for error in form.tweet.errors %}
