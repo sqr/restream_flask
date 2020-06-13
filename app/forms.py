@@ -68,3 +68,14 @@ class StreamingForm(FlaskForm):
 class StopForm(FlaskForm):
     submit_stop = SubmitField('Stop')
     fld1 = HiddenField('Field 1')
+
+class MarianizerForm(FlaskForm):
+    title = TextField('Title', validators=[
+        DataRequired(), Length(min=1, max=100)])
+    tweet = TextField('Tweet', validators=[
+        DataRequired(), Length(min=1, max=100)])
+    submit_start = SubmitField('Marianízame 💥')
+
+    def validate_tweet(self, field):
+        if 'twitter' not in field.data and 't.co' not in field.data:
+            raise ValidationError('Not a valid tweet URL')
