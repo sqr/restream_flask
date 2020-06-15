@@ -213,7 +213,7 @@ def marianizer():
         videotitle = form.title.data
         tweeturl = form.tweet.data
         videoname = "-".join([tweeturl.split("/")[-1], "1"]) + ".mp4"
-        subprocess.run(['download-twitter-resources', '-c', 'twitter_secrets.json', '--video', '--tweet', tweeturl, ''], shell=True)
+        subprocess.run(['download-twitter-resources', '-c', 'twitter_secrets.json', '--video', '--tweet', tweeturl, 'video'], shell=True)
         subprocess.call(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=True)
         file1 = open('id.txt', 'r')
         video = ('https://www.youtube.com/watch?v=' + file1.read())
