@@ -212,7 +212,7 @@ def marianizer():
     if form.submit.data and form.validate():
         videotitle = form.title.data
         tweeturl = form.tweet.data
-        videoname = "-".join([tweeturl.split("/")[-1], "1"]) + ".mp4"
+        videoname = "video/" + "-".join([tweeturl.split("/")[-1], "1"]) + ".mp4"
         subprocess.run(['download-twitter-resources', '-c', 'twitter_secrets.json', '--video', '--tweet', tweeturl, ' video'], shell=False)
         subprocess.run(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False)
         file1 = open('id.txt', 'r')
