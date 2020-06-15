@@ -210,8 +210,13 @@ def marianizer():
     form = MarianizerForm()
 
     if form.submit.data and form.validate():
-        video = 'peine'
+        videotitle = request.form['title']
         tweeturl = request.form['tweet']
+        videoname = "-".join([tweeturl.split("/")[-1], "1"]) + ".mp4"
+        subprocess.run(['download-twitter-resources', '-c', 'twitter_secrets.json', '--video', '--tweet', tweeturl, ''], shell=True)
+        subprocess.call(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=True)
+        file1 = open('id.txt', 'r')
+        video = ('https://www.youtube.com/watch?v=' + file1.read())
         return render_template('pass.html', video=tweeturl)
 
     return render_template('marianizer.html', title='Marianizer', form=form)
