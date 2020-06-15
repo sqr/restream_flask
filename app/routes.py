@@ -216,7 +216,7 @@ def marianizer():
         # subprocess.run(['download-twitter-resources', '-c', 'twitter_secrets.json', '--video', '--tweet', tweeturl, 'video'], shell=True)
         # subprocess.call(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=True)
         # file1 = open('id.txt', 'r')
-        video = ('https://www.youtube.com/watch?v=' + file1.read())
+        # video = ('https://www.youtube.com/watch?v=' + file1.read())
         return render_template('pass.html', video=tweeturl)
 
     return render_template('marianizer.html', title='Marianizer', form=form)
