@@ -213,7 +213,7 @@ def marianizer():
     if form.submit.data and form.validate():
         videotitle = form.title.data
         tweeturl = form.tweet.data
-        videoname = "/home/square/streaming-dev/restream_flask/video/" + "-".join([tweeturl.split("/")[-1], "1"]) + ".mp4"
+        videoname = "-".join([tweeturl.split("/")[-1], "1"]) + ".mp4"
         videoname2 = (Path("video") / "-".join([tweeturl.split("/")[-1], "1"])).with_suffix(".mp4")
         print(videoname2)
         subprocess.run(['download-twitter-resources', '-c', 'twitter_secrets.json', '--video', '--tweet', tweeturl, ' video'], shell=False)
