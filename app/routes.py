@@ -13,6 +13,7 @@ import os, signal
 import time
 import psutil
 import subprocess
+from pathlib import Path
 
 @app.route('/oldindex', methods=['GET', 'POST'])
 @login_required
@@ -213,6 +214,8 @@ def marianizer():
         videotitle = form.title.data
         tweeturl = form.tweet.data
         videoname = "video/" + "-".join([tweeturl.split("/")[-1], "1"]) + ".mp4"
+        videoname2 = (Path("video") / "-".join([tweeturl.split("/")[-1], "1"])).with_suffix(".mp4")
+        print(videoname2)
         subprocess.run(['download-twitter-resources', '-c', 'twitter_secrets.json', '--video', '--tweet', tweeturl, ' video'], shell=False)
         subprocess.run(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False)
         file1 = open('id.txt', 'r')
