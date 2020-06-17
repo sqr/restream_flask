@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db, tasks, scraper
-from app.forms import LoginForm, RegistrationForm, StreamingForm, StopForm
+from app.forms import LoginForm, RegistrationForm, StreamingForm, StopForm, MarianizerForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Post, Streaming
 from werkzeug.urls import url_parse
@@ -12,6 +12,8 @@ from app.exception_handlers import my_handler
 import os, signal
 import time
 import psutil
+import subprocess
+from pathlib import Path
 
 @app.route('/oldindex', methods=['GET', 'POST'])
 @login_required
@@ -171,8 +173,8 @@ def streamings():
     
     if form.submit_start.data and form.validate():
         queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
-        job = queue.enqueue('app.tasks.restream', job_timeout=36000, origin=form.origin.data, server=form.server.data, stream_key=form.stream_key.data)
-        stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data, server=form.server.data, stream_key=form.stream_key.data, author=current_user)
+        job = queue.enqueue('app.tasks.restream', job_timeout=36000, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip())
+        stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip(), author=current_user)
         db.session.add(stream)
         db.session.commit()
         flash('Your streaming is now live!')
@@ -202,3 +204,33 @@ def streamings():
         return redirect(url_for('streamings'))
 
     return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, url_presidente=url_presidente, url_ministros=url_ministros,)
+
+@app.route('/marianizer', methods=['GET', 'POST'])
+@login_required
+def marianizer():
+    form = MarianizerForm()
+
+    if form.submit.data and form.validate():
+        videotitle = form.title.data.strip()
+        tweeturl = form.tweet.data.strip()
+        videoname = (Path("video") / tweeturl.split("/")[-1]).with_suffix(".mp4")
+        
+        try:
+            subprocess.check_output(['youtube-dl', '-o', videoname, tweeturl], stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            flash('Error al descargar el vídeo de Twitter 😞')
+            print(e)
+            return render_template('marianizer.html', form=form)
+        
+        try:
+            subprocess.check_output(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            flash('Error al subir el vídeo a YouTube 😞')
+            print(e)
+            return render_template('marianizer.html', form=form)
+
+        file1 = open('id.txt', 'r')
+        video = ('https://www.youtube.com/watch?v=' + file1.read())
+        return render_template('pass.html', video=video)
+
+    return render_template('marianizer.html', title='Marianizer', form=form)
