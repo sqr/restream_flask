@@ -173,8 +173,8 @@ def streamings():
     
     if form.submit_start.data and form.validate():
         queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
-        job = queue.enqueue('app.tasks.restream', job_timeout=36000, origin=form.origin.data, server=form.server.data, stream_key=form.stream_key.data)
-        stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data, server=form.server.data, stream_key=form.stream_key.data, author=current_user)
+        job = queue.enqueue('app.tasks.restream', job_timeout=36000, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip())
+        stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip(), author=current_user)
         db.session.add(stream)
         db.session.commit()
         flash('Your streaming is now live!')
@@ -211,21 +211,21 @@ def marianizer():
     form = MarianizerForm()
 
     if form.submit.data and form.validate():
-        videotitle = form.title.data
-        tweeturl = form.tweet.data
-        # videoname = (Path("video") / "-".join([tweeturl.split("/")[-1], "1"])).with_suffix(".mp4")
+        videotitle = form.title.data.strip()
+        tweeturl = form.tweet.data.strip()
         videoname = (Path("video") / tweeturl.split("/")[-1]).with_suffix(".mp4")
         
-        try:
-            subprocess.check_output(['youtube-dl', '-o', videoname, tweeturl], stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
-            flash(e)
-            print(e)
-            return render_template('marianizer.html', form=form)
+        # try:
+        #     subprocess.check_output(['youtube-dl', '-o', videoname, tweeturl], stderr=subprocess.STDOUT)
+        # except subprocess.CalledProcessError as e:
+        #     flash('Error al descargar el vídeo de Twitter 😞')
+        #     print(e)
+        #     return render_template('marianizer.html', form=form)
+        
         try:
             subprocess.check_output(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            flash(e)
+            flash('Error al subir el vídeo a YouTube 😞')
             print(e)
             return render_template('marianizer.html', form=form)
 
