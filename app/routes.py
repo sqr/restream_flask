@@ -221,8 +221,12 @@ def marianizer():
         except subprocess.CalledProcessError as e:
             print(e)
             return render_template('marianizer.html', form=form)
-        
-        subprocess.run(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False)
+        try:
+            subprocess.run(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False)
+        except subprocess.CalledProcessError as e:
+            print(e)
+            return render_template('marianizer.html', form=form)
+
         file1 = open('id.txt', 'r')
         video = ('https://www.youtube.com/watch?v=' + file1.read())
         return render_template('pass.html', video=video)
