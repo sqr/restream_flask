@@ -217,12 +217,12 @@ def marianizer():
         videoname = (Path("video") / tweeturl.split("/")[-1]).with_suffix(".mp4")
         
         try:
-            subprocess.run(['youtube-dl', '-o', videoname, tweeturl])
+            subprocess.check_output(['youtube-dl', '-o', videoname, tweeturl])
         except subprocess.CalledProcessError as e:
             print(e)
             return render_template('marianizer.html', form=form)
         try:
-            subprocess.run(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False)
+            subprocess.check_output(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False)
         except subprocess.CalledProcessError as e:
             print(e)
             return render_template('marianizer.html', form=form)
