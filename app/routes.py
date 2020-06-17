@@ -215,12 +215,12 @@ def marianizer():
         tweeturl = form.tweet.data.strip()
         videoname = (Path("video") / tweeturl.split("/")[-1]).with_suffix(".mp4")
         
-        # try:
-        #     subprocess.check_output(['youtube-dl', '-o', videoname, tweeturl], stderr=subprocess.STDOUT)
-        # except subprocess.CalledProcessError as e:
-        #     flash('Error al descargar el vídeo de Twitter 😞')
-        #     print(e)
-        #     return render_template('marianizer.html', form=form)
+        try:
+            subprocess.check_output(['youtube-dl', '-o', videoname, tweeturl], stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            flash('Error al descargar el vídeo de Twitter 😞')
+            print(e)
+            return render_template('marianizer.html', form=form)
         
         try:
             subprocess.check_output(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False, stderr=subprocess.STDOUT)
