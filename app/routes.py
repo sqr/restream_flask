@@ -215,8 +215,13 @@ def marianizer():
         tweeturl = form.tweet.data
         # videoname = (Path("video") / "-".join([tweeturl.split("/")[-1], "1"])).with_suffix(".mp4")
         videoname = (Path("video") / tweeturl.split("/")[-1]).with_suffix(".mp4")
-        subprocess.run(['youtube-dl', '-o', videoname, tweeturl])
-        # subprocess.run(['download-twitter-resources', '-c', 'twitter_secrets.json', '--video', '--tweet', tweeturl, 'video'], shell=False)
+        
+        try:
+            subprocess.run(['youtube-dl', '-o', videoname, tweeturl])
+        except subprocess.CalledProcessError as e:
+            flash(e)
+            return render_template('marianizer.html', form=form)
+        
         subprocess.run(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False)
         file1 = open('id.txt', 'r')
         video = ('https://www.youtube.com/watch?v=' + file1.read())
