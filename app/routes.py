@@ -219,7 +219,7 @@ def marianizer():
         try:
             subprocess.run(['youtube-dl', '-o', videoname, tweeturl])
         except subprocess.CalledProcessError as e:
-            flash(e)
+            print(e)
             return render_template('marianizer.html', form=form)
         
         subprocess.run(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False)
