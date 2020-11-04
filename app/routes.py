@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request
+from sqlalchemy.sql.elements import Null
 from app import app, db, tasks, scraper
 from app.forms import LoginForm, RegistrationForm, StreamingForm, StopForm, MarianizerForm
 from flask_login import current_user, login_user, logout_user, login_required
@@ -14,6 +15,7 @@ import time
 import psutil
 import subprocess
 from pathlib import Path
+from app.stop_job import StopJob
 
 @app.route('/oldindex', methods=['GET', 'POST'])
 @login_required
@@ -173,9 +175,10 @@ def streamings():
     
     if form.submit_start.data and form.validate():
         queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
-        job = queue.enqueue('app.tasks.restream', job_timeout=36000, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip())
+        job = queue.enqueue('app.tasks.perder_tiempo')
+        #job = queue.enqueue('app.tasks.restream', job_timeout=36000, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip())
         stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip(), author=current_user)
-        db.session.add(stream)
+        db.session.merge(stream)
         db.session.commit()
         flash('Your streaming is now live!')
         return redirect(url_for('streamings'))
@@ -184,19 +187,24 @@ def streamings():
         queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
         workers = rq.Worker.all(queue=queue)
 
-        for worker in workers:
-            peine = worker.get_current_job_id()
-            if peine == form2.fld1.data:
-                pid = worker.pid
-                '''os.kill(worker.pid, signal.SIGINT)'''
-                try:
-                    parent = psutil.Process(pid)
-                except psutil.NoSuchProcess:
-                    flash('No worker')
-                    return redirect(url_for('streamings'))
-                children = parent.children(recursive=True)
-                for p in children:
-                    os.kill(p.pid, signal.SIGTERM)  
+        conn = Redis.from_url(app.config['REDIS_URL'])
+        job_id = form2.fld1.data
+        job = StopJob.fetch(job_id, connection=conn)
+        job.stop()
+
+        # for worker in workers:
+        #     peine = worker.get_current_job_id()
+        #     if peine == form2.fld1.data:
+        #         pid = worker.pid
+        #         '''os.kill(worker.pid, signal.SIGINT)'''
+        #         try:
+        #             parent = psutil.Process(pid)
+        #         except psutil.NoSuchProcess:
+        #             flash('No worker')
+        #             return redirect(url_for('streamings'))
+        #         children = parent.children(recursive=True)
+        #         for p in children:
+        #             os.kill(p.pid, signal.SIGTERM)  
 
         to_stop = Streaming.query.filter_by(job_id=form2.fld1.data).first()
         to_stop.complete = True

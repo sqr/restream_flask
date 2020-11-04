@@ -9,3 +9,4 @@ app/__pycache__/models.cpython-38.pyc
 app/__pycache__/routes.cpython-38.pyc
 app/__pycache__/tasks.cpython-38.pyc
 app.db
+env/

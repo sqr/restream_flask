@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+
+    web:
+        build: .
+        image: streaming
+        ports:
+            - 80:5000
+        environment:
+            - DATABASE_URL=mysql+pymysql://root:peine@db/streaming
+            - REDIS_URL=redis://redis:6379
+        depends_on:
+            - redis
+            - db
+    
+    db:
+        image: mysql
+        volumes:
+            - /var/lib/docker-mysql:/var/lib/mysql
+        ports:
+            - 3306:3306
+        environment:
+            - MYSQL_ROOT_PASSWORD=peine
+            - MYSQL_DATABASE=streaming
+            - MYSQL_USERNAME=streaming
+            - MYSQL_PASSWORD=peine
+        
+    redis:
+        image: redis
+    
+    rq-dashboard:
+        image: eoranged/rq-dashboard
+        ports:
+            - 9181:9181
+        environment:
+            - RQ_DASHBOARD_REDIS_URL=redis://redis:6379
+
+    worker:
+        build:
+            context: .
+            dockerfile: Dockerfile-worker    
+        environment:
+                - DATABASE_URL=mysql+pymysql://root:peine@db/streaming    
+        image: worker
+        depends_on:
+            - redis
