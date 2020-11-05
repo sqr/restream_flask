@@ -15,7 +15,6 @@ import time
 import psutil
 import subprocess
 from pathlib import Path
-from app.stop_job import StopJob
 
 @app.route('/oldindex', methods=['GET', 'POST'])
 @login_required
@@ -187,24 +186,19 @@ def streamings():
         queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
         workers = rq.Worker.all(queue=queue)
 
-        conn = Redis.from_url(app.config['REDIS_URL'])
-        job_id = form2.fld1.data
-        job = StopJob.fetch(job_id, connection=conn)
-        job.stop()
-
-        # for worker in workers:
-        #     peine = worker.get_current_job_id()
-        #     if peine == form2.fld1.data:
-        #         pid = worker.pid
-        #         '''os.kill(worker.pid, signal.SIGINT)'''
-        #         try:
-        #             parent = psutil.Process(pid)
-        #         except psutil.NoSuchProcess:
-        #             flash('No worker')
-        #             return redirect(url_for('streamings'))
-        #         children = parent.children(recursive=True)
-        #         for p in children:
-        #             os.kill(p.pid, signal.SIGTERM)  
+        for worker in workers:
+            peine = worker.get_current_job_id()
+            if peine == form2.fld1.data:
+                pid = worker.pid
+                '''os.kill(worker.pid, signal.SIGINT)'''
+                try:
+                    parent = psutil.Process(pid)
+                except psutil.NoSuchProcess:
+                    flash('No worker')
+                    return redirect(url_for('streamings'))
+                children = parent.children(recursive=True)
+                for p in children:
+                    os.kill(p.pid, signal.SIGTERM)  
 
         to_stop = Streaming.query.filter_by(job_id=form2.fld1.data).first()
         to_stop.complete = True
