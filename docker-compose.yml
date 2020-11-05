@@ -41,7 +41,8 @@ services:
             context: .
             dockerfile: Dockerfile-worker    
         environment:
-                - DATABASE_URL=mysql+pymysql://root:peine@db/streaming    
+                - DATABASE_URL=mysql+pymysql://root:peine@db/streaming
+                - REDIS_URL=redis://redis:6379
         image: worker
         depends_on:
             - redis
