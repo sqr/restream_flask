@@ -11,3 +11,4 @@ app/__pycache__/tasks.cpython-38.pyc
 app.db
 env/
 *.code-workspace
+.DS_Store
