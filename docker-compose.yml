@@ -46,4 +46,3 @@ services:
         image: worker
         depends_on:
             - redis
-            
