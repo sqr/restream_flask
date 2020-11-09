@@ -47,7 +47,7 @@ def restream(origin, server, stream_key):
 def perder_tiempo():
     for x in range(6):
         print(x)
-        time.sleep(5)
+        time.sleep(15)
 
 def set_complete():
     job = get_current_job()
