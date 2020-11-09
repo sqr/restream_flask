@@ -8,7 +8,7 @@ services:
         ports:
             - 80:5000
         environment:
-            - DATABASE_URL=mysql+pymysql://root:peine@db/streaming
+            #- DATABASE_URL=mysql+pymysql://root:peine@db/streaming
             - REDIS_URL=redis://redis:6379
         depends_on:
             - redis
@@ -16,8 +16,8 @@ services:
     
     db:
         image: mysql
-        volumes:
-            - /var/lib/docker-mysql:/var/lib/mysql
+        #volumes:
+            #- /var/lib/docker-mysql:/var/lib/mysql
         ports:
             - 3306:3306
         environment:
@@ -41,7 +41,7 @@ services:
             context: .
             dockerfile: Dockerfile-worker    
         environment:
-                - DATABASE_URL=mysql+pymysql://root:peine@db/streaming
+                #- DATABASE_URL=mysql+pymysql://root:peine@db/streaming
                 - REDIS_URL=redis://redis:6379
         image: worker
         depends_on:
