@@ -17,7 +17,10 @@ services:
     db:
         image: mysql
         volumes:
-            - ./db:/var/lib/mysql
+            # Volume for WSL2
+            - /var/lib/docker-mysql:/var/lib/mysql
+            # Volume for OSX
+            #- ./db:/var/lib/mysql
         ports:
             - 3306:3306
         environment:
