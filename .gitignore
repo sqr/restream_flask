@@ -1,13 +1,7 @@
 .vscode/settings.json
 config.py
-__pycache__/config.cpython-38.pyc
-app/__pycache__/__init__.cpython-38.pyc
-app/__pycache__/errors.cpython-38.pyc
-app/__pycache__/exception_handlers.cpython-38.pyc
-app/__pycache__/forms.cpython-38.pyc
-app/__pycache__/models.cpython-38.pyc
-app/__pycache__/routes.cpython-38.pyc
-app/__pycache__/tasks.cpython-38.pyc
+__pycache__/
+app/__pycache__/
 app.db
 env/
 *.code-workspace
