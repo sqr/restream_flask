@@ -183,30 +183,11 @@ def streamings():
         return redirect(url_for('streamings'))
 
     if form2.submit_stop.data and form2.validate():
-        queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
-        workers = rq.Worker.all(queue=queue)
-
         redis = Redis.from_url(app.config['REDIS_URL'])
-        #Trying out stopjob with rq 1.6.1
+        queue = rq.Queue('microblog-tasks', connection=redis)
 
-        workers = rq.worker.Worker.all(connection=Redis.from_url(app.config['REDIS_URL']), queue=queue)
-        for worker in workers:
-            if worker.state == rq.worker.WorkerStatus.BUSY:
-                send_kill_horse_command(redis, worker.name)
-
-        # for worker in workers:
-        #     peine = worker.get_current_job_id()
-        #     if peine == form2.fld1.data:
-        #         pid = worker.pid
-        #         '''os.kill(worker.pid, signal.SIGINT)'''
-        #         try:
-        #             parent = psutil.Process(pid)
-        #         except psutil.NoSuchProcess:
-        #             flash('No worker')
-        #             return redirect(url_for('streamings'))
-        #         children = parent.children(recursive=True)
-        #         for p in children:
-        #             os.kill(p.pid, signal.SIGTERM)  
+        job = rq.job.Job.fetch(form2.fld1.data, connection=redis)
+        send_kill_horse_command(redis, job.worker_name)
 
         to_stop = Streaming.query.filter_by(job_id=form2.fld1.data).first()
         to_stop.complete = True
