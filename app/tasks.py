@@ -20,13 +20,21 @@ def generate_url(server, stream_key):
     return server + "/" + stream_key
 
 def restream(origin, server, stream_key):
+    job = get_current_job()
+    job_id = job.get_id()
+
     if 'youtu' in origin:
         for i in range(3):
             try:
                 origin = get_manifest(origin)
+            except Exception as e:
+                print(e)
+                continue
+            else:
                 break
-            except:
-                set_complete()
+        else:
+            set_complete(job_id)
+            return
 
     stream_server = generate_url(server, stream_key)
     try:
@@ -46,14 +54,13 @@ def restream(origin, server, stream_key):
         else:
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', s='1280x720', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         ffmpeg.run(stream)
-        set_complete()
+        set_complete(job_id)
     except:
-        set_complete() 
+        set_complete(job_id) 
 
-def set_complete():
-    job = get_current_job()
-    if job:
-        task = Streaming.query.filter_by(job_id=job.get_id()).first()
+def set_complete(jobid):
+    if jobid:
+        task = Streaming.query.filter_by(job_id=jobid).first()
         task.complete = True
         db.session.commit()
 

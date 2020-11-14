@@ -35,7 +35,7 @@ def index():
         post = Post(body=form.post.data, author=current_user)
         db.session.add(post)
         db. session.commit()
-        flash('Your post is now live!')
+        flash('Your post is now live!', 'success')
         return redirect(url_for('index'))
 
     return render_template('index.html', title='Home', form=form, posts=posts.items, next_url=next_url, prev_url=prev_url)
@@ -72,7 +72,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -105,7 +105,7 @@ def edit_profile():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         db.session.commit()
-        flash('Your changes have been saved')
+        flash('Your changes have been saved', 'success')
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
@@ -183,9 +183,9 @@ def streamings():
         db.session.commit()
         
         if tasks.stream_started(job.get_id()) == True:
-            flash('Your streaming is now live!')
+            flash('Your streaming is now live!', 'success')
         else:
-            flash('Your streaming is POOPED!')
+            flash('ERROR. Please try again', 'error')
         
         return redirect(url_for('streamings'))
 
@@ -199,7 +199,7 @@ def streamings():
         to_stop = Streaming.query.filter_by(job_id=form2.fld1.data).first()
         to_stop.complete = True
         db.session.commit()
-        flash('Your streaming has been stopped')
+        flash('Your streaming has been stopped', 'warning')
         return redirect(url_for('streamings'))
     
     return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, url_presidente=url_presidente, url_ministros=url_ministros,)
@@ -217,14 +217,14 @@ def marianizer():
         try:
             subprocess.check_output(['youtube-dl', '-o', videoname, tweeturl], stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            flash('Error al descargar el vídeo de Twitter 😞')
+            flash('Error al descargar el vídeo de Twitter 😞', 'error')
             print(e)
             return render_template('marianizer.html', form=form)
         
         try:
             subprocess.check_output(['python', 'mp42youtube.py', '--file', videoname, '--title', videotitle], shell=False, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            flash('Error al subir el vídeo a YouTube 😞')
+            flash('Error al subir el vídeo a YouTube 😞', 'errror')
             print(e)
             return render_template('marianizer.html', form=form)
 
