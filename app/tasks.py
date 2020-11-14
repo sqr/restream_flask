@@ -88,3 +88,11 @@ def get_audio_stream(probe_decoded):
                 except KeyError:
                     audio_stream = 1
     return audio_stream
+
+def stream_started(id):
+    time.sleep(5)
+    task = Streaming.query.filter_by(job_id=id).first()
+    if task.complete == True:
+        return False
+    else:
+        return True

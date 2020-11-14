@@ -181,12 +181,12 @@ def streamings():
         stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip(), author=current_user)
         db.session.merge(stream)
         db.session.commit()
-        time.sleep(3)
-        task = Streaming.query.filter_by(job_id=job.get_id()).first()
-        if task.complete == True :
-            flash('Your streaming is POOPED')
-        else:
+        
+        if tasks.stream_started(job.get_id()) == True:
             flash('Your streaming is now live!')
+        else:
+            flash('Your streaming is POOPED!')
+        
         return redirect(url_for('streamings'))
 
     if form2.submit_stop.data and form2.validate():
