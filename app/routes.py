@@ -1,3 +1,4 @@
+from os import wait
 from flask import render_template, flash, redirect, url_for, request
 from rq.command import send_kill_horse_command
 from sqlalchemy.sql.elements import Null
@@ -16,6 +17,7 @@ import time
 import psutil
 import subprocess
 from pathlib import Path
+from sqlalchemy import event
 
 @app.route('/oldindex', methods=['GET', 'POST'])
 @login_required
@@ -179,7 +181,12 @@ def streamings():
         stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip(), author=current_user)
         db.session.merge(stream)
         db.session.commit()
-        flash('Your streaming is now live!')
+        time.sleep(3)
+        task = Streaming.query.filter_by(job_id=job.get_id()).first()
+        if task.complete == True :
+            flash('Your streaming is POOPED')
+        else:
+            flash('Your streaming is now live!')
         return redirect(url_for('streamings'))
 
     if form2.submit_stop.data and form2.validate():
@@ -192,8 +199,9 @@ def streamings():
         to_stop = Streaming.query.filter_by(job_id=form2.fld1.data).first()
         to_stop.complete = True
         db.session.commit()
+        flash('Your streaming has been stopped')
         return redirect(url_for('streamings'))
-
+    
     return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, url_presidente=url_presidente, url_ministros=url_ministros,)
 
 @app.route('/marianizer', methods=['GET', 'POST'])

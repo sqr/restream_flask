@@ -21,7 +21,13 @@ def generate_url(server, stream_key):
 
 def restream(origin, server, stream_key):
     if 'youtu' in origin:
-        origin = get_manifest(origin)
+        for i in range(3):
+            try:
+                origin = get_manifest(origin)
+                break
+            except:
+                set_complete()
+
     stream_server = generate_url(server, stream_key)
     try:
         stream_map = None
