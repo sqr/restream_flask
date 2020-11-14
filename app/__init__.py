@@ -7,6 +7,7 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from redis import Redis
 import rq
+from flask_toastr import Toastr
 
 
 app = Flask(__name__)
@@ -21,5 +22,6 @@ moment = Moment(app)
 redis = Redis.from_url(app.config['REDIS_URL'])
 task_queue = rq.Queue('microblog-tasks', connection=redis)
 app.jinja_env.auto_reload = True
+toastr = Toastr(app)
 
 from app import routes, models, errors

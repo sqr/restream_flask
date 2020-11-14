@@ -1,4 +1,13 @@
 {% extends 'bootstrap/base.html' %}
+
+{% block head %}
+{{super()}}
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+
+{% endblock %}
+
 {% block title %}
     {% if title %}Welcome to HuffPost Streamings{% else %}Welcome to HuffPost Streamings{% endif %}
 {% endblock %}
@@ -51,4 +60,5 @@
 {% block scripts %}
     {{ super()}}
     {{ moment.include_moment() }}
+    {{ toastr.include_toastr_js() }}
 {% endblock %}
