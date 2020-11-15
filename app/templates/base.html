@@ -1,4 +1,13 @@
 {% extends 'bootstrap/base.html' %}
+
+{% block head %}
+{{super()}}
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+
+{% endblock %}
+
 {% block title %}
     {% if title %}Welcome to HuffPost Streamings{% else %}Welcome to HuffPost Streamings{% endif %}
 {% endblock %}
@@ -36,14 +45,6 @@
 
 {% block content %}
     <div class="container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
-
         {# application content needs to be provided in the app_content block #}
         {% block app_content %}{% endblock %}
     </div>
@@ -51,4 +52,5 @@
 {% block scripts %}
     {{ super()}}
     {{ moment.include_moment() }}
+    {{ toastr.include_toastr_js() }}
 {% endblock %}

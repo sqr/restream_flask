@@ -12,8 +12,9 @@ RUN pip install -e git+https://github.com/nvie/rq.git@master#egg=rq
 
 COPY app app
 COPY migrations migrations
-COPY microblog.py config.py dummy.db mosca_76.png boot-worker.sh ./
+COPY microblog.py config.py mosca_76.png boot-worker.sh ./
 RUN chmod +x boot-worker.sh
+RUN mkdir sqlite
 
 ENV FLASK_APP microblog.py
 

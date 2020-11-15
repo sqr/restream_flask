@@ -8,17 +8,19 @@ services:
         ports:
             - 80:5000
         environment:
-            - DATABASE_URL=mysql+pymysql://root:peine@db/streaming
+            #- DATABASE_URL=mysql+pymysql://root:peine@db/streaming
             - REDIS_URL=redis://redis:6379
+        volumes:
+            - sqlite:/home/streaming/sqlite
         depends_on:
             - redis
             - db
     
     db:
         image: mysql
-        volumes:
+        #volumes:
             # Volume for WSL2
-            - /var/lib/docker-mysql:/var/lib/mysql
+            #- /var/lib/docker-mysql:/var/lib/mysql
             # Volume for OSX
             #- ./db:/var/lib/mysql
         ports:
@@ -44,10 +46,15 @@ services:
             context: .
             dockerfile: Dockerfile-worker    
         environment:
-                - DATABASE_URL=mysql+pymysql://root:peine@db/streaming
+                #- DATABASE_URL=mysql+pymysql://root:peine@db/streaming
                 - REDIS_URL=redis://redis:6379
         image: worker
+        volumes:
+            - sqlite:/home/streaming/sqlite
         depends_on:
             - redis
         deploy:
-            replicas: 3
+            replicas: 1
+
+volumes:
+    sqlite:

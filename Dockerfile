@@ -12,8 +12,11 @@ RUN pip install -e git+https://github.com/nvie/rq.git@master#egg=rq
 
 COPY app app
 COPY migrations migrations
-COPY microblog.py config.py dummy.db boot.sh ./
+COPY microblog.py config.py boot.sh ./
 RUN chmod +x boot.sh
+
+RUN mkdir sqlite
+COPY dummy.db ./sqlite/
 
 ENV FLASK_APP microblog.py
 
