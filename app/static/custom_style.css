@@ -2282,7 +2282,7 @@ th {
 .table > tfoot > tr > td {
   padding: 8px;
   line-height: 1.42857143;
-  vertical-align: top;
+  vertical-align: middle;
   border-top: 1px solid #464545;
 }
 .table > thead > tr > th {
@@ -2559,18 +2559,16 @@ output {
   padding: 10px 15px;
   font-size: 15px;
   line-height: 1.42857143;
-  color: #464545;
-  background-color: #ffffff;
+  color: #dadada;
+  background-color: #2b2b2b;
   background-image: none;
   border: 1px solid #f1f1f1;
   border-radius: 4px;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .form-control:focus {
   border-color: #ffffff;
-  outline: 0;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 1px rgb(255, 0, 0), 0 0 8px rgba(187, 255, 0, 0.6);
 }
 .form-control::-moz-placeholder {
   color: #999999;
@@ -4434,7 +4432,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  background-color: #375a7f;
+  background-color: #3d454f;
   border-color: transparent;
 }
 .navbar-default .navbar-brand {
@@ -6751,7 +6749,7 @@ table > tbody > tr > td,
 .table > tbody > tr > td,
 table > tfoot > tr > td,
 .table > tfoot > tr > td {
-  border: none;
+  border-top: 1px solid #464545;
 }
 table-bordered > thead > tr > th,
 .table-bordered > thead > tr > th,
@@ -6772,15 +6770,14 @@ textarea {
   color: #464545;
 }
 .form-control,
-input,
 textarea {
-  border: 2px hidden transparent;
-  box-shadow: none;
+  border: 1px solid rgba(126, 126, 126, 0.705);
 }
 .form-control:focus,
-input:focus,
 textarea:focus {
-  box-shadow: none;
+  border-color: rgba(172, 172, 172, 0.815);
+  box-shadow: inset 0 1px 1px rgba(214, 214, 214, 0.541);
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .form-control-feedback {
   color: #464545;

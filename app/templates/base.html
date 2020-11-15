@@ -5,7 +5,10 @@
     {{ toastr.include_jquery() }}
     {{ toastr.include_toastr_css() }}
     {{ toastr.message() }}
-
+    {% block styles %}
+        {{super()}}
+        <link rel="stylesheet" href="{{url_for('.static', filename='custom_style.css')}}">
+    {% endblock %}
 {% endblock %}
 
 {% block title %}
