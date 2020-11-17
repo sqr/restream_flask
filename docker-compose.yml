@@ -54,7 +54,7 @@ services:
         depends_on:
             - redis
         deploy:
-            replicas: 1
+            replicas: 3
 
 volumes:
     sqlite:

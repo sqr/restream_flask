@@ -1,11 +1,15 @@
+from rq import queue
 from app import app, db
-from rq import get_current_job
+from rq import get_current_job, Queue
+from rq.worker import Worker, WorkerStatus
 from app.models import Task, Streaming
 import time
 import ffmpeg
 import youtube_dl
 from pathlib import Path
 import json
+from redis import Redis
+
 
 def get_manifest(video_url):
     ydl_opts = {
@@ -103,3 +107,16 @@ def stream_started(id):
         return False
     else:
         return True
+
+def worker_availability():
+    redis = Redis.from_url(app.config['REDIS_URL'])
+    queue = Queue('microblog-tasks', connection=redis)
+    worker_array = {'total': 0, 'busy': 0, 'idle': 0}
+    workers = Worker.all(connection=redis, queue=queue)
+    for worker in workers:
+        worker_array['total']+=1
+        if worker.state == WorkerStatus.BUSY:
+            worker_array['busy']+=1
+        if worker.state == WorkerStatus.IDLE:
+            worker_array['idle']+=1
+    return worker_array
