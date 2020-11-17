@@ -2,11 +2,11 @@
 
 <tr>
     <th scope="row">{{ streaming.title }}</th>
-    <td><a href ="{{ streaming.origin }}" target="_blank">Open</a></td>
-    <td>{{ streaming.server }}</td>
-    <td>{{ streaming.stream_key }}</td>
+    <td class="stream"><a href ="{{ streaming.origin }}" target="_blank">Open</a></td>
+    <td class="stream">{{ streaming.server }}</td>
+    <td class="stream">{{ streaming.stream_key }}</td>
     <td>{{ streaming.author.username }}</td>
-    <td>{{ moment(streaming.timestamp).fromNow() }}</td>
+    <td class="stream">{{ moment(streaming.timestamp).fromNow() }}</td>
     <td>
     {% if streaming.complete %}
     <div class="text-center">❌</div>
