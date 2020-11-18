@@ -7,7 +7,7 @@ WORKDIR /home/streaming
 COPY requirements.txt requirements.txt
 RUN apk update && apk add gcc libc-dev make git libffi-dev openssl-dev python3-dev libxml2-dev libxslt-dev
 RUN pip install -r requirements.txt
-RUN pip install gunicorn pymysql
+RUN pip install gunicorn[gevent] pymysql
 RUN pip install -e git+https://github.com/nvie/rq.git@master#egg=rq
 
 COPY app app

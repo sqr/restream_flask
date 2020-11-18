@@ -120,3 +120,10 @@ def worker_availability():
         if worker.state == WorkerStatus.IDLE:
             worker_array['idle']+=1
     return worker_array
+
+def event_stream():
+    r = Redis.from_url(app.config['REDIS_URL'], charset='utf-8', decode_responses=True)
+    pubsub = r.pubsub(ignore_subscribe_messages=True)
+    pubsub.subscribe('chat')
+    for message in pubsub.listen():
+        yield 'data: %s\n\n' % message['data']

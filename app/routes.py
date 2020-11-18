@@ -1,5 +1,5 @@
 from os import wait
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, Response
 from rq.command import send_kill_horse_command
 from sqlalchemy.sql.elements import Null
 from app import app, db, tasks, scraper
@@ -175,13 +175,18 @@ def streamings():
     prev_url = url_for('streamings', page=streamings.prev_num) \
         if streamings.has_prev else None
     worker_availability = tasks.worker_availability()
+
     
+
     if form.submit_start.data and form.validate():
         queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
         job = queue.enqueue('app.tasks.restream', job_timeout=36000, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip())
         stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip(), author=current_user)
         db.session.merge(stream)
         db.session.commit()
+
+        r = Redis.from_url(app.config['REDIS_URL'], charset='utf-8', decode_responses=True)
+        r.publish('chat', 'peine')
         
         if tasks.stream_started(job.get_id()) == True:
             flash('Your streaming is now live!', 'success')
@@ -234,3 +239,7 @@ def marianizer():
         return render_template('pass.html', video=video)
 
     return render_template('marianizer.html', title='Marianizer', form=form)
+
+@app.route('/stream')
+def stream():
+    return Response(tasks.event_stream(), mimetype="text/event-stream")

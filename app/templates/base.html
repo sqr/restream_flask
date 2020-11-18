@@ -48,6 +48,18 @@
 
 {% block content %}
     <div class="container">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            function sse() {
+                var source = new EventSource('/stream');
+                var out = document.getElementById('out');
+                source.onmessage = function(e) {
+                    console.log(e.data)
+                    if(!alert(e.data)){window.location.reload();}
+                };
+            }
+            sse();
+        </script>
         {# application content needs to be provided in the app_content block #}
         {% block app_content %}{% endblock %}
     </div>
