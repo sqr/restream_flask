@@ -56,5 +56,11 @@ services:
         deploy:
             replicas: 3
 
+    rtmp-hls:
+        image: alqutami/rtmp-hls
+        ports:
+            - 1935:1935
+            - 8080:8080
+
 volumes:
     sqlite:

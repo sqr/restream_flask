@@ -184,9 +184,6 @@ def streamings():
         stream = Streaming(job_id=job.get_id(), title=form.title.data, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip(), author=current_user)
         db.session.merge(stream)
         db.session.commit()
-
-        r = Redis.from_url(app.config['REDIS_URL'], charset='utf-8', decode_responses=True)
-        r.publish('chat', 'peine')
         
         if tasks.stream_started(job.get_id()) == True:
             flash('Your streaming is now live!', 'success')

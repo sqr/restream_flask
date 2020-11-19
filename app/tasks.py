@@ -57,10 +57,14 @@ def restream(origin, server, stream_key):
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', s='1920x1080', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         else:
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', s='1280x720', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
-        ffmpeg.run(stream)
+        ffmpeg.run(stream, capture_stdout=True, capture_stderr=True)
         set_complete(job_id)
-    except:
-        set_complete(job_id) 
+    except ffmpeg.Error as e:
+        print('stdout:', e.stdout.decode('utf8'))
+        print('stderr:', e.stderr.decode('utf8'))
+        set_complete(job_id)
+        raise e
+ 
 
 def set_complete(jobid):
     if jobid:
