@@ -26,6 +26,10 @@ def generate_url(server, stream_key):
 def restream(origin, server, stream_key):
     job = get_current_job()
     job_id = job.get_id()
+    task = Streaming.query.filter_by(job_id=job_id).first()
+    task_name = task.title
+    r = Redis.from_url(app.config['REDIS_URL'], charset='utf-8', decode_responses=True)
+
 
     if 'youtu' in origin:
         for i in range(3):
@@ -38,6 +42,7 @@ def restream(origin, server, stream_key):
                 break
         else:
             set_complete(job_id)
+            r.publish('error', 'Error parseando youtube en: '+task_name)
             return
 
     stream_server = generate_url(server, stream_key)
@@ -58,10 +63,16 @@ def restream(origin, server, stream_key):
         else:
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', s='1280x720', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         ffmpeg.run(stream, capture_stdout=True, capture_stderr=True)
+        print('job completed')
         set_complete(job_id)
     except ffmpeg.Error as e:
         print('stdout:', e.stdout.decode('utf8'))
         print('stderr:', e.stderr.decode('utf8'))
+        e_decoded = e.stderr.decode('utf8')
+        if '404 Not Found' in e_decoded:
+            r.publish('error', 'El stream ' + task_name + ' ha terminado.')
+        else:
+            r.publish('error', 'Error desconocido en stream: ' + task_name)
         set_complete(job_id)
         raise e
  
@@ -105,7 +116,6 @@ def get_audio_stream(probe_decoded):
     return audio_stream
 
 def stream_started(id):
-    time.sleep(5)
     task = Streaming.query.filter_by(job_id=id).first()
     if task.complete == True:
         return False
@@ -128,6 +138,6 @@ def worker_availability():
 def event_stream():
     r = Redis.from_url(app.config['REDIS_URL'], charset='utf-8', decode_responses=True)
     pubsub = r.pubsub(ignore_subscribe_messages=True)
-    pubsub.subscribe('chat')
+    pubsub.subscribe('error')
     for message in pubsub.listen():
         yield 'data: %s\n\n' % message['data']
