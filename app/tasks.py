@@ -9,6 +9,13 @@ import youtube_dl
 from pathlib import Path
 import json
 from redis import Redis
+import logging
+
+logging.basicConfig(
+    filename="test.log",
+    level=logging.DEBUG,
+    format="%(asctime)s:%(levelname)s:%(message)s"
+    )
 
 
 def get_manifest(video_url):
@@ -42,6 +49,7 @@ def restream(origin, server, stream_key):
                 break
         else:
             set_complete(job_id)
+            logging.debug("Error parseando url de youtube: " + origin)
             r.publish('error', 'Error parseando youtube en: '+task_name)
             return
 
