@@ -10,9 +10,9 @@ import logging
 
 logging.basicConfig(
     filename="/var/www/html/test.log",
+    format="%(asctime)s:%(levelname)s:%(message)s",
     encoding='utf-8',
-    level=logging.DEBUG,
-    format="%(asctime)s:%(levelname)s:%(message)s"
+    level=logging.DEBUG
     )
 
 def get_manifest(video_url):
@@ -21,6 +21,7 @@ def get_manifest(video_url):
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         peine = ydl.extract_info(video_url, download=False) 
+
     return peine.get('url')
 
 def generate_url(server, stream_key):
@@ -30,8 +31,9 @@ def restream(origin, server, stream_key):
     if 'youtu' in origin:
         try:
             origin = get_manifest(origin)
-        except:
-            logging.error("Error parseando url de youtube: " + origin)
+        except Exception as e:
+            logging.error("Error parseando url de youtube " + origin + e)
+            
     stream_server = generate_url(server, stream_key)
     try:
         stream_map = None
