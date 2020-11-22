@@ -19,7 +19,11 @@ def get_manifest(video_url):
         'format': 'best'
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        peine = ydl.extract_info(video_url, download=False)
+        try: 
+            peine = ydl.extract_info(video_url, download=False)
+        except:
+            peine = 'ERROR'
+            logging.debug("Error parseando url de youtube: " + video_url)
 
     return peine.get('url')
 
