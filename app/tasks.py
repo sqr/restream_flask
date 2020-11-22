@@ -6,6 +6,13 @@ import ffmpeg
 import youtube_dl
 from pathlib import Path
 import json
+import logging
+
+logging.basicConfig(
+    filename="/var/www/html/test.log",
+    level=logging.DEBUG,
+    format="%(asctime)s:%(levelname)s:%(message)s"
+    )
 
 def get_manifest(video_url):
     ydl_opts = {
@@ -21,7 +28,10 @@ def generate_url(server, stream_key):
 
 def restream(origin, server, stream_key):
     if 'youtu' in origin:
-        origin = get_manifest(origin)
+        try:
+            origin = get_manifest(origin)
+        except:
+            logging.debug("Error parseando url de youtube: " + origin)
     stream_server = generate_url(server, stream_key)
     try:
         stream_map = None
