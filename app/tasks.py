@@ -20,6 +20,7 @@ def get_manifest(video_url):
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         try: 
+            logging.debug("HOLA")
             peine = ydl.extract_info(video_url, download=False)
         except:
             peine = 'ERROR'
