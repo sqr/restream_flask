@@ -10,6 +10,7 @@ import logging
 
 logging.basicConfig(
     filename="/var/www/html/test.log",
+    encoding='utf-8',
     level=logging.DEBUG,
     format="%(asctime)s:%(levelname)s:%(message)s"
     )
@@ -20,11 +21,7 @@ def get_manifest(video_url):
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         try: 
-            logging.debug("HOLA")
             peine = ydl.extract_info(video_url, download=False)
-        except:
-            peine = 'ERROR'
-            logging.debug("Error parseando url de youtube: " + video_url)
 
     return peine.get('url')
 
@@ -36,7 +33,7 @@ def restream(origin, server, stream_key):
         try:
             origin = get_manifest(origin)
         except:
-            logging.debug("Error parseando url de youtube: " + origin)
+            logging.error("Error parseando url de youtube: " + origin)
     stream_server = generate_url(server, stream_key)
     try:
         stream_map = None
@@ -56,7 +53,8 @@ def restream(origin, server, stream_key):
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', s='1280x720', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         ffmpeg.run(stream)
         set_complete()
-    except:
+    except Exception as e:
+        logging.error("Error durante el streaming: " + e)
         set_complete() 
 
 def set_complete():
