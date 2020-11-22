@@ -20,9 +20,7 @@ def get_manifest(video_url):
         'format': 'best'
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        try: 
-            peine = ydl.extract_info(video_url, download=False)
-
+        peine = ydl.extract_info(video_url, download=False) 
     return peine.get('url')
 
 def generate_url(server, stream_key):
