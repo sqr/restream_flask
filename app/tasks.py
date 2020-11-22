@@ -11,7 +11,6 @@ import logging
 logging.basicConfig(
     filename="/var/www/html/test.log",
     format="%(asctime)s:%(levelname)s:%(message)s",
-    encoding='utf-8',
     level=logging.DEBUG
     )
 
@@ -33,7 +32,7 @@ def restream(origin, server, stream_key):
             origin = get_manifest(origin)
         except Exception as e:
             logging.error("Error parseando url de youtube " + origin + e)
-            
+
     stream_server = generate_url(server, stream_key)
     try:
         stream_map = None
