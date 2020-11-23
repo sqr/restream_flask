@@ -6,3 +6,4 @@ app.db
 env/
 *.code-workspace
 .DS_Store
+db/

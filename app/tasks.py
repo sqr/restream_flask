@@ -9,7 +9,7 @@ import json
 import logging
 
 logging.basicConfig(
-    filename="/var/www/html/test.log",
+    filename="/var/www/html/prod.log",
     format="%(asctime)s:%(levelname)s:%(message)s",
     level=logging.DEBUG
     )
