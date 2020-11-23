@@ -6,13 +6,20 @@ import ffmpeg
 import youtube_dl
 from pathlib import Path
 import json
+import logging
+
+logging.basicConfig(
+    filename="/var/www/html/prod.log",
+    format="%(asctime)s:%(levelname)s:%(message)s",
+    level=logging.DEBUG
+    )
 
 def get_manifest(video_url):
     ydl_opts = {
         'format': 'best'
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        peine = ydl.extract_info(video_url, download=False)
+        peine = ydl.extract_info(video_url, download=False) 
 
     return peine.get('url')
 
@@ -21,7 +28,11 @@ def generate_url(server, stream_key):
 
 def restream(origin, server, stream_key):
     if 'youtu' in origin:
-        origin = get_manifest(origin)
+        try:
+            origin = get_manifest(origin)
+        except:
+            logging.error("Error parseando url de youtube " + origin)
+
     stream_server = generate_url(server, stream_key)
     try:
         stream_map = None
@@ -39,9 +50,11 @@ def restream(origin, server, stream_key):
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', s='1920x1080', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
         else:
             stream = ffmpeg.output(stream_ol, stream1_audio, stream_server, format='flv', vcodec='libx264', acodec='aac', preset='veryfast', g='50', threads='2', s='1280x720', crf='23', maxrate='4M', bufsize='5M', channel_layout='stereo')
-        ffmpeg.run(stream)
+        ffmpeg.run(stream, capture_stdout=True, capture_stderr=True)
         set_complete()
-    except:
+    except ffmpeg.Error as e:
+        e_decoded = e.stderr.decode('utf8')
+        logging.error("Error de FFMPEG durante el streaming: " + e_decoded)
         set_complete() 
 
 def set_complete():
