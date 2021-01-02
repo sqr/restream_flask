@@ -174,7 +174,16 @@ def streamings():
         if streamings.has_next else None
     prev_url = url_for('streamings', page=streamings.prev_num) \
         if streamings.has_prev else None
-    
+    q = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
+    workers = rq.Worker.all(queue=q)
+    work_status = [0,0]
+    for worker in workers:
+        if worker.state == 'idle' :
+            work_status[1] +=1
+            work_status[0] +=1
+        else:
+            work_status[0] +=1
+
     if form.submit_start.data and form.validate():
         queue = rq.Queue('microblog-tasks', connection=Redis.from_url(app.config['REDIS_URL']))
         job = queue.enqueue('app.tasks.restream', job_timeout=36000, origin=form.origin.data.strip(), server=form.server.data.strip(), stream_key=form.stream_key.data.strip())
@@ -202,7 +211,7 @@ def streamings():
         flash('Your streaming has been stopped', 'warning')
         return redirect(url_for('streamings'))
     
-    return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, url_presidente=url_presidente, url_ministros=url_ministros,)
+    return render_template('streamings.html', title='Streamings', streamings=streamings.items, form2=form2, form=form, posts=posts.items, next_url=next_url, prev_url=prev_url, url_presidente=url_presidente, url_ministros=url_ministros, work_status=work_status)
 
 @app.route('/marianizer', methods=['GET', 'POST'])
 @login_required

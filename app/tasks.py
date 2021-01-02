@@ -20,8 +20,12 @@ def generate_url(server, stream_key):
     return server + "/" + stream_key
 
 def restream(origin, server, stream_key):
+    reuters_id = 'd1qvkrpvk32u24'
     job = get_current_job()
     job_id = job.get_id()
+
+    if reuters_id in origin:
+       origin = origin.replace('playlist.m3u8', 'chunklist_b2048000.m3u8')
 
     if 'youtu' in origin:
         for i in range(3):
