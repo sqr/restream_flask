@@ -5,16 +5,21 @@ services:
     web:
         build: .
         image: streaming
-        ports:
-            - 80:5000
+        #ports:
+        #    - 80:5000
+        expose:
+            - 5000
         environment:
             - DATABASE_URL=mysql+pymysql://root:peine@db/streaming
             - REDIS_URL=redis://redis:6379
         volumes:
             - sqlite:/home/streaming/sqlite
+        restart: always
         depends_on:
             - redis
             - db
+        networks:
+            - nginx
     
     db:
         image: mysql
@@ -31,9 +36,14 @@ services:
             - MYSQL_DATABASE=streaming
             - MYSQL_USERNAME=streaming
             - MYSQL_PASSWORD=peine
+        restart: always
+        networks:
+            - nginx
 
     redis:
         image: redis
+        networks:
+            - nginx
     
     rq-dashboard:
         image: eoranged/rq-dashboard
@@ -41,6 +51,9 @@ services:
             - 9181:9181
         environment:
             - RQ_DASHBOARD_REDIS_URL=redis://redis:6379
+        restart: always
+        networks:
+            - nginx
 
     worker:
         build:
@@ -54,8 +67,16 @@ services:
             - sqlite:/home/streaming/sqlite
         depends_on:
             - redis
+        restart: always
         deploy:
-            replicas: 1
+            replicas: 6
+        networks:
+            - nginx
 
 volumes:
     sqlite:
+
+networks:
+  nginx:
+    name: nginx
+    driver: bridge
