@@ -12,8 +12,8 @@ services:
         environment:
             - DATABASE_URL=mysql+pymysql://root:peine@db/streaming
             - REDIS_URL=redis://redis:6379
-        volumes:
-            - sqlite:/home/streaming/sqlite
+        #volumes:
+        #    - sqlite:/home/streaming/sqlite
         restart: always
         depends_on:
             - redis
@@ -27,7 +27,7 @@ services:
             # Volume for WSL2
             #- /var/lib/docker-mysql:/var/lib/mysql
             # Volume for OSX
-            - ./db:/var/lib/mysql
+            #- ./db:/var/lib/mysql
             - ./dump:/var/lib/dump
         ports:
             - 3306:3306
@@ -64,8 +64,8 @@ services:
                 - DATABASE_URL=mysql+pymysql://root:peine@db/streaming
                 - REDIS_URL=redis://redis:6379
         image: worker
-        volumes:
-            - sqlite:/home/streaming/sqlite
+        #volumes:
+        #    - sqlite:/home/streaming/sqlite
         depends_on:
             - redis
         restart: always
@@ -74,8 +74,8 @@ services:
         networks:
             - nginx
 
-volumes:
-    sqlite:
+#volumes:
+#    sqlite:
 
 networks:
   nginx:
